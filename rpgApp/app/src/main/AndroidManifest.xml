@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".MainActivity7"
-            android:exported="false" />
+            android:name=".controller.PersonagensDebugActivity"
+            android:exported="true" />
         <activity
             android:name=".controller.MainActivity6"
             android:exported="false" />

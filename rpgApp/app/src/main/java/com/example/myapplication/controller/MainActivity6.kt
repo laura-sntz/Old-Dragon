@@ -1,6 +1,7 @@
 package com.example.myapplication.controller
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,14 @@ import com.example.myapplication.R
 import com.example.myapplication.model.atributos.Atributo
 import com.example.myapplication.model.atributos.NomeAtributo
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.data.PersonagemRepository
+import com.example.myapplication.data.db.AppDatabase
+import com.example.myapplication.data.entity.PersonagemEntity
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
 
 class MainActivity6 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +39,8 @@ class MainActivity6 : ComponentActivity() {
         val sub    = intent.getStringExtra(EXTRA_SUB) // pode ser nulo
         val attrs  = intent.getIntArrayExtra(EXTRA_ATTRS) ?: IntArray(6) { 10 }
 
+        val repo = PersonagemRepository(AppDatabase.getInstance(this))
+
         setContent {
             MyApplicationTheme {
                 Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -37,7 +49,10 @@ class MainActivity6 : ComponentActivity() {
                         raca = raca,
                         classe = classe,
                         subclasse = sub,
-                        atributosArray = attrs
+                        atributosArray = attrs,
+                        onSalvar = { p ->
+                            repo.salvar(p)
+                        }
                     )
                 }
             }
@@ -51,9 +66,12 @@ fun FichaBasicaScreen(
     raca: String,
     classe: String,
     subclasse: String?,
-    atributosArray: IntArray
+    atributosArray: IntArray,
+    onSalvar: suspend (PersonagemEntity) -> Unit
 ) {
-    // reconstrói a lista de Atributo usando teu Model
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     val atributos: List<Atributo> = remember(atributosArray.toList()) {
         NomeAtributo.values().mapIndexed { idx, na ->
             Atributo(nome = na, valor = atributosArray.getOrNull(idx) ?: 10)
@@ -105,6 +123,27 @@ fun FichaBasicaScreen(
                     }
                 }
             }
+
+            Button(
+                onClick = {
+                    val e = PersonagemEntity(
+                        nome = nome,
+                        raca = raca,
+                        classe = classe,
+                        forca = atributosArray.getOrNull(0) ?: 10,
+                        destreza = atributosArray.getOrNull(1) ?: 10,
+                        constituicao = atributosArray.getOrNull(2) ?: 10,
+                        inteligencia = atributosArray.getOrNull(3) ?: 10,
+                        sabedoria = atributosArray.getOrNull(4) ?: 10,
+                        carisma = atributosArray.getOrNull(5) ?: 10
+                    )
+
+                    scope.launch {
+                        onSalvar(e)
+                        Toast.makeText(context, "Personagem salvo!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            ) { Text("Salvar personagem") }
         }
     }
 }
