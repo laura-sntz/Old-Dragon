@@ -2,11 +2,11 @@ package com.example.myapplication.ui.theme.classe
 
 import androidx.annotation.DrawableRes
 import com.example.myapplication.R
-import com.example.myapplication.model.classes.implementacoes.Clerigo
-import com.example.myapplication.model.classes.implementacoes.Guerreiro
-import com.example.myapplication.model.classes.implementacoes.Ladrao
-import com.example.myapplication.model.classes.implementacoes.Mago
-import com.example.myapplication.model.classes.base.Classe as ModelClasse
+import com.example.myapplication.model.personagens.classes.implementacoes.Clerigo
+import com.example.myapplication.model.personagens.classes.implementacoes.Guerreiro
+import com.example.myapplication.model.personagens.classes.implementacoes.Ladrao
+import com.example.myapplication.model.personagens.classes.implementacoes.Mago
+import com.example.myapplication.model.personagens.classes.base.Classe as ModelClasse
 
 @DrawableRes
 fun ModelClasse.imageRes(): Int = when (this) {

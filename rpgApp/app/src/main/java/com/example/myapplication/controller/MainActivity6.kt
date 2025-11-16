@@ -1,5 +1,6 @@
 package com.example.myapplication.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -16,16 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
-import com.example.myapplication.model.atributos.Atributo
-import com.example.myapplication.model.atributos.NomeAtributo
+import com.example.myapplication.model.personagens.atributos.Atributo
+import com.example.myapplication.model.personagens.atributos.NomeAtributo
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.data.PersonagemRepository
 import com.example.myapplication.data.db.AppDatabase
 import com.example.myapplication.data.entity.PersonagemEntity
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
 
 class MainActivity6 : ComponentActivity() {
@@ -51,12 +52,17 @@ class MainActivity6 : ComponentActivity() {
                         subclasse = sub,
                         atributosArray = attrs,
                         onSalvar = { p ->
+                            // agora devolve o ID salvo no banco
                             repo.salvar(p)
                         }
                     )
                 }
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_PERSONAGEM_ID = "extra_personagem_id"
     }
 }
 
@@ -67,7 +73,7 @@ fun FichaBasicaScreen(
     classe: String,
     subclasse: String?,
     atributosArray: IntArray,
-    onSalvar: suspend (PersonagemEntity) -> Unit
+    onSalvar: suspend (PersonagemEntity) -> Long   // devolve o ID
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -139,11 +145,23 @@ fun FichaBasicaScreen(
                     )
 
                     scope.launch {
-                        onSalvar(e)
-                        Toast.makeText(context, "Personagem salvo!", Toast.LENGTH_SHORT).show()
+                        // 1) salva e pega o ID
+                        val id = onSalvar(e)
+
+                        Toast.makeText(
+                            context,
+                            "Personagem salvo! Indo para a simulação...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // 2) abre a tela de batalha/simulação
+                        val intent = Intent(context, BatalhaActivity::class.java).apply {
+                            putExtra(MainActivity6.EXTRA_PERSONAGEM_ID, id)
+                        }
+                        context.startActivity(intent)
                     }
                 }
-            ) { Text("Salvar personagem") }
+            ) { Text("Salvar personagem e ir para simulação") }
         }
     }
 }

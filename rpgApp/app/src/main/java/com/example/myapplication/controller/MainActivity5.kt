@@ -14,9 +14,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.model.atributos.NomeAtributo
-import com.example.myapplication.model.distribuicao.EstiloRolagem
-import com.example.myapplication.model.distribuicao.estiloParaMetodo
+import com.example.myapplication.model.personagens.atributos.NomeAtributo
+import com.example.myapplication.model.personagens.distribuicao.EstiloRolagem
+import com.example.myapplication.model.personagens.distribuicao.estiloParaMetodo
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 const val EXTRA_ATTRS  = "ATRIBUTOS_ARRAY"

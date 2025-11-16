@@ -22,11 +22,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.model.classes.base.Classe as ModelClasse
-import com.example.myapplication.model.classes.implementacoes.Clerigo
-import com.example.myapplication.model.classes.implementacoes.Guerreiro
-import com.example.myapplication.model.classes.implementacoes.Ladrao
-import com.example.myapplication.model.classes.implementacoes.Mago
+import com.example.myapplication.model.personagens.classes.base.Classe as ModelClasse
+import com.example.myapplication.model.personagens.classes.implementacoes.Clerigo
+import com.example.myapplication.model.personagens.classes.implementacoes.Guerreiro
+import com.example.myapplication.model.personagens.classes.implementacoes.Ladrao
+import com.example.myapplication.model.personagens.classes.implementacoes.Mago
 import com.example.myapplication.ui.theme.FieldLight
 import com.example.myapplication.ui.theme.MedievalGold
 import com.example.myapplication.ui.theme.MyApplicationTheme
